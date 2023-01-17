@@ -147,7 +147,6 @@ class CinderVolumePebbleHandler(container_handlers.PebbleHandler):
     def init_service(self, context):
         self.write_config(context)
         self.start_service()
-        self._state.service_ready = True
 
 
 class CinderCephOperatorCharm(charm.OSBaseOperatorCharm):
@@ -170,7 +169,6 @@ class CinderCephOperatorCharm(charm.OSBaseOperatorCharm):
 
     def __init__(self, framework):
         super().__init__(framework)
-        self._state.set_default(api_ready=False)
 
     def get_relation_handlers(self) -> List[relation_handlers.RelationHandler]:
         """Relation handlers for the service."""
@@ -207,7 +205,6 @@ class CinderCephOperatorCharm(charm.OSBaseOperatorCharm):
         ]
 
     def api_ready(self, event) -> None:
-        self._state.api_ready = True
         self.configure_charm(event)
         if self._state.bootstrapped:
             for handler in self.pebble_handlers:
